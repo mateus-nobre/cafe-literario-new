@@ -1,0 +1,69 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Build output
+public/
+dist/
+
+# Cache
+.cache/
+*.cache
+.parcel-cache/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE & Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Package manager lock files (opcional - descomente se não quiser versionar)
+# package-lock.json
+# yarn.lock
+# composer.lock
+
+# WordPress
+.htaccess
+
+# Sage/Bud specific
+.bud/
+bud.config.js.bak
+
+# Testing
+coverage/
+.nyc_output/
+
+# Misc
+*.orig
+*.rej

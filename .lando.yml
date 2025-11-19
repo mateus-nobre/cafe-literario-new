@@ -1,0 +1,36 @@
+name: cafe-literario
+recipe: wordpress
+config:
+  webroot: web
+  php: "8.2"
+  via: nginx
+  xdebug: false
+  database: mariadb:10.6
+
+services:
+  node:
+    type: node:20
+
+tooling:
+  wp:
+    service: appserver
+    cmd: wp
+  composer:
+    service: appserver
+    cmd: composer
+  yarn:
+    service: node
+    cmd: yarn
+  npm:
+    service: node
+    cmd: npm
+  cache-clear:
+    service: appserver
+    description: Limpa todos os caches do projeto (WordPress, tema, Composer, PHP)
+    dir: /app
+    cmd: bash .lando/scripts/cache-clear.sh
+  cc:
+    service: appserver
+    description: Alias para cache-clear - Limpa todos os caches do projeto
+    dir: /app
+    cmd: bash .lando/scripts/cache-clear.sh
