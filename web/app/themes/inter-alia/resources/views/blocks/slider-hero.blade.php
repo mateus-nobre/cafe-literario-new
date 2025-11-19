@@ -19,3 +19,4 @@
 @unless ($block->preview)
   </div>
 @endunless
+
