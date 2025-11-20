@@ -1,3 +1,42 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --theme-primary: #a58376;
+  --theme-primary-active: #c48b6a;
+  --theme-primary-hover: #9d6f55;
+  --theme-primary-bg: #000;
+  --theme-primary-bg-hover: #262626;
+}
+
+/* Components - Button */
+
+.btn {
+  @apply relative uppercase px-4 py-2 text-white rounded-lg
+         transition-colors duration-300 ease-in-out;
+}
+
+.btn::after {
+  @apply content-[''] absolute bottom-0 right-1 w-0.5 h-0
+         transition-all duration-500 ease-in-out;
+}
+
+.btn::before {
+  @apply content-[''] absolute top-0 right-2 w-0.5 h-0
+         transition-all duration-500 ease-in-out;
+}
+
+.btn:hover {
+  @apply bg-[var(--theme-primary-bg-hover)];
+}
+
+.btn:hover::after {
+  @apply bg-[var(--theme-primary)] h-full;
+}
+
+.btn:hover::before {
+  @apply bg-white h-full;
+}
+
+/* Fim Componentes - Button */

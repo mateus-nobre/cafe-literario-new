@@ -1259,6 +1259,9 @@
         "line-height": {}
       }
     },
+    "layout": {
+      "contentSize": "1200px"
+    },
     "spacing": {
       "padding": true,
       "units": [

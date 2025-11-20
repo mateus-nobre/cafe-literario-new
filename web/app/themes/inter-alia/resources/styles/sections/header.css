@@ -3,6 +3,91 @@
 @tailwind utilities;
 
 header {
-  @apply bg-gray-900 text-white p-2;
-}
+  @apply bg-black text-white px-6 py-4 relative z-50;
 
+  .menu-principal {
+    @apply fixed inset-0 w-full h-screen bg-black px-6 pt-24 pb-8 z-40;
+    @apply md:static md:h-auto md:w-auto md:bg-transparent md:px-0 md:pt-0 md:pb-0 md:z-auto;
+  }
+
+  .menu-principal>ul {
+    @apply flex flex-col gap-4;
+    @apply md:flex-row md:items-center md:gap-6;
+  }
+
+  .menu-principal>ul>li>a {
+    @apply block w-full;
+  }
+
+  .menu-principal-container {
+    @apply container mx-auto flex items-center justify-between;
+
+    /* MENU PRINCIPAL */
+    ul {
+      @apply flex flex-col gap-6;
+      @apply md:flex-row md:items-center md:gap-6;
+
+      li {
+        @apply relative;
+
+        a {
+          @apply w-fit flex items-center uppercase px-4 py-2 bg-[#1b1b1b];
+          @apply md:bg-transparent;
+        }
+
+        /* SUBMENU */
+        ul {
+          @apply mt-4 hidden bg-[#262626] text-white rounded-lg min-w-40 z-50;
+          @apply md:mt-0 md:absolute left-0 top-full md:pt-10 md:bg-transparent md:p-2;
+
+          li {
+            @apply p-2 pb-0;
+            @apply md:bg-black;
+
+            &:first-child {
+              @apply rounded-t-lg;
+            }
+
+            &:last-child {
+              @apply rounded-b-lg pb-2;
+            }
+
+            a {
+              @apply w-full block normal-case px-4 py-2 hover:bg-black;
+
+              &:hover {
+                @apply bg-[#262626];
+              }
+
+              &.btn {
+                &::before {
+                  @apply hidden;
+                }
+
+                &::after {
+                  @apply hidden;
+                }
+              }
+            }
+          }
+        }
+
+        &:hover>ul {
+          @apply block;
+        }
+      }
+    }
+  }
+
+  .menu-toggle {
+    @apply flex flex-col justify-center gap-1 md:hidden z-[51];
+  }
+
+  .menu-toggle .linha {
+    @apply w-6 h-[2px] bg-white;
+  }
+
+  .menu-principal-contato {
+    @apply bg-[#262626];
+  }
+}

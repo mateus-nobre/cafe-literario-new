@@ -100,15 +100,6 @@ export default async (app) => {
 
   /**
    * Auto-register block-specific entrypoints
-   * Each block gets its own CSS and JS bundle for conditional loading
-   *
-   * Blocks will be automatically discovered from app/Blocks directory.
-   * For each block, create separate entrypoints if CSS/JS files exist:
-   * - resources/styles/blocks/{block-name}.css
-   * - resources/scripts/blocks/{block-name}.js
-   *
-   * Each block gets a unique entrypoint name: block-{block-name}
-   * This allows conditional loading based on block usage.
    */
   const blockNames = getBlockNames();
 
@@ -134,23 +125,29 @@ export default async (app) => {
     }
   });
 
-  /**
-   * Auto-register CSS files from subdirectories based on folder hierarchy
-   *
-   * Scans resources/styles recursively and creates entrypoints for each CSS file
-   * found in subdirectories. Entrypoint names are based on the folder structure:
-   * - resources/styles/sections/header.css -> section-header
-   * - resources/styles/components/button.css -> component-button
-   *
-   * These entrypoints can be enqueued automatically in PHP based on the hierarchy.
-   */
   const stylesBaseDir = join(__dirname, 'resources/styles');
+  const scriptsBaseDir = join(__dirname, 'resources/scripts');
   const cssFiles = scanCssFiles(stylesBaseDir, stylesBaseDir);
 
   cssFiles.forEach(({ path, entryName }) => {
+    const entries = [];
+
     // Convert path to Bud alias format: sections/header.css -> @styles/sections/header
     const styleAlias = `@styles/${path.replace('.css', '')}`;
-    app.entry(entryName, [styleAlias]);
+    entries.push(styleAlias);
+
+    // Check if corresponding JS file exists
+    // sections/header.css -> sections/header.js
+    const jsPath = path.replace('.css', '.js');
+    const jsFullPath = join(scriptsBaseDir, jsPath);
+
+    if (existsSync(jsFullPath)) {
+      // Convert path to Bud alias format: sections/header.js -> @scripts/sections/header
+      const scriptAlias = `@scripts/${jsPath.replace('.js', '')}`;
+      entries.push(scriptAlias);
+    }
+
+    app.entry(entryName, entries);
   });
 
   /**
@@ -167,12 +164,11 @@ export default async (app) => {
    * @see {@link https://bud.js.org/reference/bud.setProxyUrl}
    * @see {@link https://bud.js.org/reference/bud.watch}
    */
-  // Server listens on 0.0.0.0 to be accessible from outside container
-  // But we set the public URL to localhost for browser access
+  const proxyUrl = 'https://cafe-literario.lndo.site/';
   app
     .serve('http://0.0.0.0:3000')
     .setPublicUrl('http://localhost:3000')
-    .setProxyUrl('https://cafe-literario.lndo.site/')
+    .setProxyUrl(proxyUrl)
     .watch(['resources/views', 'app']);
 
   /**
@@ -203,6 +199,9 @@ export default async (app) => {
           'font-size': {},
           'line-height': {},
         },
+      },
+      layout: {
+        contentSize: '1200px',
       },
       spacing: {
         padding: true,
