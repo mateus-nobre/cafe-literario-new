@@ -7,9 +7,20 @@ config:
   xdebug: false
   database: mariadb:10.6
 
+proxy:
+  appserver_nginx:
+    - cafe-literario.lndo.site
+  node:
+    - localhost:3000
+    - localhost:3001
+
 services:
   node:
     type: node:20
+    overrides:
+      ports:
+        - 3000:3000
+        - 3001:3001
 
 tooling:
   wp:
@@ -21,9 +32,11 @@ tooling:
   yarn:
     service: node
     cmd: yarn
+    dir: /app/web/app/themes/inter-alia
   npm:
     service: node
     cmd: npm
+    dir: /app/web/app/themes/inter-alia
   cache-clear:
     service: appserver
     description: Limpa todos os caches do projeto (WordPress, tema, Composer, PHP)

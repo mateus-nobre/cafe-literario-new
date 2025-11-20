@@ -1,4 +1,4 @@
-import { readdirSync, existsSync } from 'fs';
+import { readdirSync, existsSync, statSync } from 'fs';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -30,6 +30,52 @@ function getBlockNames() {
   } catch (e) {
     return [];
   }
+}
+
+/**
+ * Recursively scan directory for CSS files
+ * @param {string} dir - Directory to scan
+ * @param {string} baseDir - Base directory for relative paths
+ * @param {string[]} excludeFiles - Files to exclude
+ * @returns {Array<{path: string, entryName: string}>}
+ */
+function scanCssFiles(dir, baseDir, excludeFiles = ['app.css', 'editor.css']) {
+  const cssFiles = [];
+
+  try {
+    const entries = readdirSync(dir);
+
+    for (const entry of entries) {
+      const fullPath = join(dir, entry);
+      const stat = statSync(fullPath);
+
+      if (stat.isDirectory()) {
+        // Recursively scan subdirectories
+        cssFiles.push(...scanCssFiles(fullPath, baseDir, excludeFiles));
+      } else if (entry.endsWith('.css') && !excludeFiles.includes(entry)) {
+        // Get relative path from baseDir
+        const relativePath = fullPath
+          .replace(baseDir, '')
+          .replace(/^[\/\\]+/, '')
+          .replace(/\\/g, '/');
+        // Convert path to entry name: sections/header.css -> section-header
+        const entryName = relativePath
+          .replace('.css', '')
+          .split('/')
+          .join('-');
+
+        cssFiles.push({
+          path: relativePath,
+          entryName: entryName,
+          fullPath: fullPath
+        });
+      }
+    }
+  } catch (e) {
+    // Directory doesn't exist or can't be read
+  }
+
+  return cssFiles;
 }
 
 /**
@@ -89,22 +135,44 @@ export default async (app) => {
   });
 
   /**
+   * Auto-register CSS files from subdirectories based on folder hierarchy
+   *
+   * Scans resources/styles recursively and creates entrypoints for each CSS file
+   * found in subdirectories. Entrypoint names are based on the folder structure:
+   * - resources/styles/sections/header.css -> section-header
+   * - resources/styles/components/button.css -> component-button
+   *
+   * These entrypoints can be enqueued automatically in PHP based on the hierarchy.
+   */
+  const stylesBaseDir = join(__dirname, 'resources/styles');
+  const cssFiles = scanCssFiles(stylesBaseDir, stylesBaseDir);
+
+  cssFiles.forEach(({ path, entryName }) => {
+    // Convert path to Bud alias format: sections/header.css -> @styles/sections/header
+    const styleAlias = `@styles/${path.replace('.css', '')}`;
+    app.entry(entryName, [styleAlias]);
+  });
+
+  /**
    * Set public path
    *
    * @see {@link https://bud.js.org/reference/bud.setPublicPath}
    */
-  app.setPublicPath('/app/themes/sage/public/');
+  app.setPublicPath('/app/themes/inter-alia/public/');
 
   /**
    * Development server settings
    *
-   * @see {@link https://bud.js.org/reference/bud.setUrl}
+   * @see {@link https://bud.js.org/reference/bud.serve}
    * @see {@link https://bud.js.org/reference/bud.setProxyUrl}
    * @see {@link https://bud.js.org/reference/bud.watch}
    */
+  // Server listens on 0.0.0.0 to be accessible from outside container
+  // But we set the public URL to localhost for browser access
   app
-    .setUrl('http://localhost:3000')
-    .setProxyUrl('http://example.test')
+    .serve('http://0.0.0.0:3000')
+    .setPublicUrl('http://localhost:3000')
+    .setProxyUrl('https://cafe-literario.lndo.site/')
     .watch(['resources/views', 'app']);
 
   /**

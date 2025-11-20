@@ -18,6 +18,25 @@ add_action('wp_enqueue_scripts', function () {
 }, 100);
 
 /**
+ * Initialize Style Manager for automatic CSS enqueue based on folder hierarchy.
+ * This will automatically enqueue CSS files from subdirectories like:
+ * - resources/styles/sections/header.css -> section-header
+ * - resources/styles/components/button.css -> component-button
+ *
+ * @return void
+ */
+add_action('after_setup_theme', function () {
+    if (!is_admin()) {
+        try {
+            $styleManager = new StyleManager();
+            $styleManager->init();
+        } catch (\Exception $e) {
+            // Silently fail if StyleManager has issues
+        }
+    }
+}, 30);
+
+/**
  * Register the theme assets with the block editor.
  *
  * @return void
@@ -45,7 +64,7 @@ add_action('after_setup_theme', function () {
      * @link https://developer.wordpress.org/reference/functions/register_nav_menus/
      */
     register_nav_menus([
-        'primary_navigation' => __('Primary Navigation', 'sage'),
+        'main_menu' => __('Menu Principal', 'sage'),
     ]);
 
     /**
