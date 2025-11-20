@@ -24,3 +24,11 @@
         </a>
     </div>
 </header>
+<section class="hero-header" style="background-image: url('@asset('images/background-hero.png')')">
+    <div class="hero-header-container">
+        <div class="hero-header-content">
+            <img src="@asset('images/inter-alia.png')" alt="Logo">
+            <span>O seu café literário</span>
+        </div>
+    </div>
+</section>

@@ -91,3 +91,19 @@ header {
     @apply bg-[#262626];
   }
 }
+
+.hero-header {
+  @apply bg-cover bg-center bg-no-repeat min-h-screen flex items-center;
+}
+
+.hero-header-container {
+  @apply container flex flex-col text-white mb-56;
+
+  & img {
+    @apply w-96;
+  }
+}
+
+.hero-header-content {
+  @apply flex flex-col gap-3;
+}
