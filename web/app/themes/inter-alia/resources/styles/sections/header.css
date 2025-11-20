@@ -93,14 +93,17 @@ header {
 }
 
 .hero-header {
-  @apply bg-cover bg-center bg-no-repeat min-h-screen flex items-center;
+  @apply bg-cover bg-left min-h-80 bg-no-repeat flex items-start pt-8;
+  @apply md:bg-center md:min-h-screen md:items-center;
 }
 
 .hero-header-container {
-  @apply container flex flex-col text-white mb-56;
+  @apply container flex flex-col text-white px-8;
+  @apply md:mb-56;
 
   & img {
-    @apply w-96;
+    @apply w-full;
+    @apply md:w-96;
   }
 }
 
