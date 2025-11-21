@@ -94,12 +94,12 @@ header {
 
 .hero-header {
   @apply bg-cover bg-left min-h-80 bg-no-repeat flex items-start pt-12;
-  @apply md:bg-center md:min-h-screen md:pt-8;
+  @apply md:bg-center md:min-h-[40rem] md:pt-8;
 }
 
 .hero-header-container {
   @apply container flex flex-col text-white px-8;
-  @apply md:pt-28;
+  @apply md:py-28;
 
   & img {
     @apply w-full max-w-96;

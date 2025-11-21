@@ -199,7 +199,7 @@ body {
 
 .content-with-sidebar__main {
   @apply w-full -mt-32;
-  @apply md:w-[70%] md:-mt-[32rem];
+  @apply md:w-[70%] md:-mt-80;
 }
 
 .content-with-sidebar__sidebar {
