@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * Slider Hero Block Styles
+ */
+
+ .slider-hero {
+  @apply relative mx-4;
+}
+
+.slider-hero .swiper {
+  @apply w-full h-full;
+}
+
+.slider-hero .swiper-slide .slide-image {
+  @apply min-h-[450px] rounded-lg;
+}
+
+.slider-hero .swiper-slide {
+  @apply flex items-center justify-center min-h-[450px];
+}
+
+.slider-hero .slide-image {
+  @apply flex bg-cover items-center justify-center min-h-[450px];
+
+  &::before {
+    @apply absolute inset-0 bg-black bg-opacity-50 backdrop-blur-[1px] rounded-lg;
+    content: '';
+  }
+}
+
+.slider-hero .slide-content {
+  @apply max-w-xl flex flex-col items-center;
+}
+
+.slider-hero .slide-content h3 {
+  @apply text-4xl text-white font-bold mb-4 text-center relative z-10;
+  font-family: 'Playfair Display', serif;
+}
+
+.slider-hero .slide-content p {
+  @apply text-lg text-white font-light line-clamp-3 text-center relative z-10 mx-7;
+}
+
+.slider-hero .slide-content-button {
+  @apply flex items-center justify-center text-lg mt-8 mb-4 text-white font-light text-center relative z-10 border border-white rounded-lg px-4 py-2 w-fit;
+
+  &:hover {
+    @apply bg-transparent;
+  }
+}
+
+.slider-hero .swiper-slide a {
+  @apply block w-full;
+}
+
+.slider-hero .swiper-pagination {
+  @apply bottom-5 ;
+}
+
+.slider-hero .swiper-pagination-bullet {
+  @apply bg-slate-200;
+}
+
+.slider-hero .swiper-pagination-bullet-active {
+  @apply bg-white w-6 rounded-full;
+}

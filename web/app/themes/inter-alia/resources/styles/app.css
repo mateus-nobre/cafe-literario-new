@@ -165,11 +165,11 @@ body {
 }
 
 .btn::after {
-  @apply content-[''] absolute bottom-0 right-1 w-0.5 h-0 transition-all duration-500 ease-in-out;
+  @apply content-[''] absolute bottom-0 right-1 w-[2px] h-0 transition-all duration-500 ease-in-out;
 }
 
 .btn::before {
-  @apply content-[''] absolute top-0 right-2 w-0.5 h-0 transition-all duration-500 ease-in-out;
+  @apply content-[''] absolute top-0 right-[6px] w-[2px] h-0 transition-all duration-500 ease-in-out;
 }
 
 .btn:hover {
@@ -185,3 +185,30 @@ body {
 }
 
 /* Fim Componentes - Button */
+
+/* Components - Content with Sidebar */
+
+.content-with-sidebar {
+  @apply container mx-auto px-4 py-8;
+}
+
+.content-with-sidebar__wrapper {
+  @apply flex flex-col gap-8;
+  @apply lg:flex-row;
+}
+
+.content-with-sidebar__main {
+  @apply w-full -mt-32;
+  @apply md:w-[70%] md:-mt-[32rem];
+}
+
+.content-with-sidebar__sidebar {
+  @apply w-full;
+  @apply md:w-[30%];
+}
+
+.sidebar {
+  @apply flex flex-col gap-6;
+}
+
+/* Fim Componentes - Content with Sidebar */

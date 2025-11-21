@@ -28,7 +28,7 @@
     <div class="hero-header-container">
         <div class="hero-header-content">
             <img src="@asset('images/inter-alia.png')" alt="Logo">
-            <span>O seu café literário</span>
+            <span>O seu Café Literário</span>
         </div>
     </div>
 </section>

@@ -62,20 +62,53 @@ class SliderHero extends Block
 
         $fields
             ->addRepeater('items')
-                ->addText('item')
+                ->addPostObject('post', [
+                    'label' => 'Post',
+                    'instructions' => 'Selecione um post para exibir no slider',
+                    'required' => true,
+                    'return_format' => 'object',
+                    'multiple' => false,
+                ])
             ->endRepeater();
 
         return $fields->build();
     }
 
     /**
-     * Retrieve the items.
+     * Retrieve the items with post data.
      *
      * @return array
      */
     public function items()
     {
-        return get_field('items') ?: $this->example['items'];
+        $items = get_field('items') ?: [];
+
+        if (empty($items)) {
+            return $this->example['items'] ?? [];
+        }
+
+        // Process each item to get full post data
+        $processed_items = [];
+        foreach ($items as $item) {
+            if (empty($item['post']) || !is_object($item['post'])) {
+                continue;
+            }
+
+            $post = $item['post'];
+
+            $processed_items[] = [
+                'post' => $post,
+                'id' => $post->ID,
+                'title' => get_the_title($post->ID),
+                'excerpt' => get_the_excerpt($post->ID),
+                'content' => get_the_content(null, false, $post->ID),
+                'url' => get_permalink($post->ID),
+                'date' => get_the_date('', $post->ID),
+                'featured_image' => get_the_post_thumbnail_url($post->ID, 'full'),
+            ];
+        }
+
+        return $processed_items;
     }
 }
 
